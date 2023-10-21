@@ -10,6 +10,39 @@
 (function () {
     'use strict';
 
+    // Function to find the nearest parent element that is a button
+    function findNearestButtonParent(element) { // i max 10
+        var currentElement = element;
+        let i = 0;
+        while (currentElement && i < 10) {
+            ++i;
+            if (currentElement.tagName === 'BUTTON') {
+                // The element is a button, return it
+                return currentElement;
+            }
+            currentElement = currentElement.parentNode;
+        }
+        // If no button parent element is found, return null or perform other actions
+        return null;
+    }
+
+    document.querySelector("body").addEventListener(
+        "mousedown"
+        , function (evt) {
+            var target = evt.target;
+            let btnTarget = findNearestButtonParent(target);
+            if (btnTarget != null && evt.button === 1 && btnTarget.id === "search-icon-legacy") {
+                evt.preventDefault();
+                let searchText = document.querySelector('input#search').value;
+                if (searchText !== "") {
+                    const url = "https://www.youtube.com/results?search_query=" + searchText;
+                    window.open(url, "_blank");
+                }
+            }
+        }
+    );
+
+
     function checkMiddleBtn(event) {
         event.preventDefault(); //
         if (event.button == 1) {
@@ -25,7 +58,7 @@
 
                 let urlSearchText = searchText.replace(/ /g, '+');
                 const url = "https://www.youtube.com/results?search_query=" + urlSearchText;
-                const newWindow = window.open(url, "_blank");
+                window.open(url, "_blank");
             } catch (e) {
 
             }
